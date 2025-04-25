@@ -4,6 +4,7 @@ import { SpriteDictionary } from "../helpers/types/SpriteDictionaty";
 import App from "./App";
 import { generateCombination } from "../helpers/generateCombination";
 import { shinyVault } from "../helpers/shinyVault";
+import {sound} from "@pixi/sound"
 
 export default class GameManager {
 
@@ -35,6 +36,8 @@ export default class GameManager {
 
     public rotateHandle(direction: 'clockwise' | 'counterclockwise') {
         const degrees = direction === 'clockwise' ? 60 : -60;
+
+        sound.play("lever")
 
         gsap.to(this.spriteObj.handle, {
 
@@ -116,8 +119,10 @@ export default class GameManager {
         this.spriteObj.doorOpen.position.set(4350, App.BASE_HEIGHT / 2)
         this.spriteObj.doorOpenShadow.visible = true;
         this.spriteObj.doorOpenShadow.position.set(4400, App.BASE_HEIGHT / 2 + 50)
+        sound.play("door")
         shinyVault(this.spriteObj.blink)
         shinyVault(this.spriteObj.blink2)
         shinyVault(this.spriteObj.blink3)
+        sound.play("shiny")
     }
 }

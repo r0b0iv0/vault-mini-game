@@ -1,6 +1,7 @@
 import { Assets, Container, Sprite } from "pixi.js";
 import App from "./App";
 import { SpriteDictionary } from "../helpers/types/SpriteDictionaty";
+import { sound } from "@pixi/sound";
 
 
 class AssetLoader {
@@ -10,6 +11,8 @@ class AssetLoader {
         const texturePaths = Object.keys(assetFiles);
         const allTexturesPromises = texturePaths.map((path) => Assets.load(path))
 
+        this.loadSounds()
+        
         try {
             const loadedTextures = await Promise.all(allTexturesPromises);
             console.log("Textures loaded:", loadedTextures);
@@ -65,6 +68,12 @@ class AssetLoader {
         }
 
         return this.baseEditSprites(sprites)
+    }
+
+    private loadSounds() {
+        sound.add("lever", "../../public/sounds/lever.mp3")
+        sound.add("door", "../../public/sounds/door.mp3")
+        sound.add("shiny", "../../public/sounds/shiny.mp3")
     }
 }
 
