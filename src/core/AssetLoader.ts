@@ -1,69 +1,60 @@
-import { Assets } from "pixi.js";
-import { Debug } from "../utils/debug";
+import { Assets, Container, Sprite } from "pixi.js";
+import App   from "./App";
+import { SpriteDictionary } from "../helpers/types/SpriteDictionaty";
 
-type Asset = {
-  name: string;
-  url: string;
-  ext: string;
-  category: string;
-};
 
-export default class AssetLoader {
-  private assetFileUrls = this.importAssetFiles();
+class AssetLoader {
 
-  manifest: Asset[];
+    private async loadedTextures() {
+        const assetFiles = import.meta.glob("/public/images/*.png");
+        const texturePaths = Object.keys(assetFiles);
+        const allTexturesPromises = texturePaths.map((path) => Assets.load(path))
 
-  constructor() {
-    this.manifest = this.generateManifest();
-  }
-
-  importAssetFiles() {
-    const assetFiles = import.meta.glob("/public/**/*.*");
-
-    return Object.keys(assetFiles);
-  }
-
-  async loadAssets() {
-    for (const asset of this.manifest) {
-      Assets.add(asset.name, asset.url);
+        try {
+            const loadedTextures = await Promise.all(allTexturesPromises);
+            console.log("Textures loaded:", loadedTextures);
+            return loadedTextures
+        } catch (e) {
+            console.error("Texture loading failed:", e);
+            throw e;
+        }
     }
 
-    const resources = await Assets.load(this.manifest.map((asset) => asset.name));
+    private baseEditSprites(spritesObj: SpriteDictionary) {
+        spritesObj.door.anchor.set(0.46, 0.5)
 
-    Debug.log("✅ Loaded assets", resources);
+        spritesObj.doorOpen.anchor.set(0.46, 0.5)
+        spritesObj.doorOpen.zIndex = 1;
+        spritesObj.doorOpen.visible = false;
 
-    return resources;
-  }
+        spritesObj.doorOpenShadow.visible = false;
+        spritesObj.doorOpenShadow.anchor.set(0.46, 0.5)
 
-  generateManifest() {
-    const assetsManifest: Asset[] = [];
-    const assetPathRegexp =
-      /public\/(?<category>[\w.-]+)\/(?<name>[\w.-]+)\.(?<ext>\w+)$/;
+        spritesObj.handleShadow.anchor.set(0.46, 0.46)
+        // spritesObj.handleShadow.visible = false;
 
-    this.assetFileUrls.forEach((assetPath) => {
-      const match = assetPathRegexp.exec(assetPath);
+        spritesObj.handle.zIndex = 1;
+        spritesObj.handle.eventMode = 'static';
 
-      if (!match || !match.groups) {
-        return console.error(
-          `Invalid asset path: ${assetPath}, should match ${assetPathRegexp}`
-        );
-      }
+        return spritesObj
+        
+    }
 
-      const { category, name, ext } = match.groups;
+    async createSprites(container: Container) {
+        let sprites: SpriteDictionary = {};
 
-      // Skip image files in the spritesheets category
-      if (category === "spritesheets" && ext !== "json") {
-        return;
-      }
+        (await this.loadedTextures()).forEach((texture) => {
+            const fileName: string = texture.textureCacheIds[0].split('/')[3]
+            const spriteName = fileName.slice(0, fileName.length - 4)
+            const sprite = new Sprite(texture)
+            sprites[spriteName] = sprite
+            container.addChild(sprite)
+            sprite.anchor.set(0.5)
+            sprite.position.set(App.BASE_WIDTH / 2, App.BASE_HEIGHT / 2)
+        })
 
-      assetsManifest.push({
-        category,
-        name,
-        ext,
-        url: assetPath.replace(/.*public/, ""),
-      });
-    });
-
-    return assetsManifest;
-  }
+        return this.baseEditSprites(sprites)
+    }
 }
+
+export default new AssetLoader();
