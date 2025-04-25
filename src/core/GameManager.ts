@@ -117,5 +117,7 @@ export default class GameManager {
         this.spriteObj.doorOpenShadow.visible = true;
         this.spriteObj.doorOpenShadow.position.set(4400, App.BASE_HEIGHT / 2 + 50)
         shinyVault(this.spriteObj.blink)
+        shinyVault(this.spriteObj.blink2)
+        shinyVault(this.spriteObj.blink3)
     }
 }
