@@ -1,22 +1,17 @@
-### 👉 fork of Hafaux's neat <a href=" https://github.com/Hafaux/pixi-framework" target="_blank">PIXI Framework</a> (feats scene management and Spine animations)
+### 👉 fork of Hafaux's neat <a href=" https://github.com/Hafaux/pixi-framework" target="_blank">PIXI Framework</a>
 
 ## 🎮 Simple 2D Game Framework for [PixiJS](https://pixijs.com) using [Vite⚡](https://vitejs.dev/)
 
-Get started with your first Pixi game in a few quick steps. Spares the hussle dealing with asset loading and initialisation trivia.
-
 ### Highlights 🌟
 
-- Automagic asset loading (sounds, spritesheets, textures)
+- Automagic asset loading (sounds, textures)
 - Typescript
 - <a href="https://c.tenor.com/Hw0aKasI6B4AAAAC/fast-blazing-fast.gif" target="_blank">Blazing fast</a> builds and HMR through Vite
 - GSAP tweening
-- Keyboard input handling
 
 ## Usage 🛠️
 
-1. Clone repository `npx degit https://github.com/Hafaux/pixi-framework.git new-folder`
-
-2. Navigate to the new directory and install the project dependencies using `npm install`
+1. Navigate to the new directory and install the project dependencies using `npm install`
 
 
 ### Commands 💻
