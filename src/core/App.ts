@@ -1,14 +1,23 @@
-import { Application } from "pixi.js";
-import AssetLoader from "./AssetLoader";
-import Game from "../scenes/Game";
+import { Application, Container } from "pixi.js";
+import * as PIXI from "pixi.js"
+import gsap from "gsap";
+import PixiPlugin from "gsap/PixiPlugin";
+import assetLoader from "./AssetLoader"
+import { SpriteDictionary } from "../helpers/types/SpriteDictionaty";
+import GameManager from "./GameManager";
 
-export interface SceneUtils {
-  assetLoader: AssetLoader;
-}
+gsap.registerPlugin(PixiPlugin)
+PixiPlugin.registerPIXI(PIXI)
 
 export default class App extends Application {
 
-  private game: Game;
+  public static readonly BASE_WIDTH = 6000;
+  public static readonly BASE_HEIGHT = 3000;
+
+  spritesObj : SpriteDictionary = {}
+
+  private gameContainer = new Container();
+
 
   constructor() {
     super({
@@ -18,29 +27,33 @@ export default class App extends Application {
       powerPreference: "high-performance",
       backgroundColor: 0x23272a,
     });
-
-    const sceneUtils = {
-      assetLoader: new AssetLoader(),
-    };
-
-    this.game = new Game(sceneUtils);
+    this.stage.addChild(this.gameContainer)
   }
 
   async begin() {
-    this.stage.addChild(this.game);
 
-    await this.game.load();
+    this.gameContainer.sortableChildren = true;
+    this.spritesObj = await assetLoader.createSprites(this.gameContainer)
 
-    this.game.start();
+    this.onResize()
+    
+    new GameManager(this.spritesObj).start()
 
-    window.addEventListener("resize", this.onResize);
+    window.addEventListener("resize", this.onResize.bind(this));
 
-    this.ticker.add((delta) => this.game.update(delta));
   }
 
-  private onResize(ev: UIEvent) {
-    const target = ev.target as Window;
+  private onResize = () => {
 
-    this.game.onResize?.(target.innerWidth, target.innerHeight);
+    const scale = Math.min(
+      window.innerWidth / App.BASE_WIDTH,
+      window.innerHeight / App.BASE_HEIGHT
+    );
+
+    this.gameContainer.scale.set(scale)
+
+    this.gameContainer.x = (window.innerWidth - App.BASE_WIDTH * scale) / 2;
+    this.gameContainer.y = (window.innerHeight - App.BASE_HEIGHT * scale) / 2;
+
   }
 }
