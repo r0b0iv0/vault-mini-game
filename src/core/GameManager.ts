@@ -3,6 +3,7 @@ import { DEG_TO_RAD } from "pixi.js";
 import { SpriteDictionary } from "../helpers/types/SpriteDictionaty";
 import App from "./App";
 import { generateCombination } from "../helpers/generateCombination";
+import { shinyVault } from "../helpers/shinyVault";
 
 export default class GameManager {
 
@@ -72,7 +73,7 @@ export default class GameManager {
             this.currentRotation = 0;
 
             if (this.currentStep === 3) {
-                // unlock
+                this.unlockVault()
             }
         } else if (this.currentRotation > currentPair.number ||
             direction !== currentPair.direction) {
@@ -105,5 +106,16 @@ export default class GameManager {
             }
         });
 
+    }
+
+    private unlockVault() {
+        this.spriteObj.door.visible = false;
+        this.spriteObj.handle.visible = false;
+        this.spriteObj.handleShadow.visible = false;
+        this.spriteObj.doorOpen.visible = true;
+        this.spriteObj.doorOpen.position.set(4350, App.BASE_HEIGHT / 2)
+        this.spriteObj.doorOpenShadow.visible = true;
+        this.spriteObj.doorOpenShadow.position.set(4400, App.BASE_HEIGHT / 2 + 50)
+        shinyVault(this.spriteObj.blink)
     }
 }
