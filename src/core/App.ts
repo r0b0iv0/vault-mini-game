@@ -2,7 +2,6 @@ import { Application, Container } from "pixi.js";
 import * as PIXI from "pixi.js"
 import gsap from "gsap";
 import PixiPlugin from "gsap/PixiPlugin";
-import assetLoader from "./AssetLoader"
 import { SpriteDictionary } from "../helpers/types/SpriteDictionaty";
 import GameManager from "./GameManager";
 
@@ -14,7 +13,7 @@ export default class App extends Application {
   public static readonly BASE_WIDTH = 6000;
   public static readonly BASE_HEIGHT = 3000;
 
-  spritesObj : SpriteDictionary = {}
+  spritesObj: SpriteDictionary = {}
 
   private gameContainer = new Container();
 
@@ -33,11 +32,10 @@ export default class App extends Application {
   async begin() {
 
     this.gameContainer.sortableChildren = true;
-    this.spritesObj = await assetLoader.createSprites(this.gameContainer)
 
     this.onResize()
-    
-    new GameManager(this.spritesObj).start()
+
+    await new GameManager(this.gameContainer, this.ticker).start()
 
     window.addEventListener("resize", this.onResize.bind(this));
 

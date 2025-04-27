@@ -34,8 +34,8 @@ class AssetLoader {
         spritesObj.doorOpenShadow.visible = false;
         spritesObj.doorOpenShadow.anchor.set(0.46, 0.5)
 
-        spritesObj.handleShadow.anchor.set(0.46, 0.46)
-        spritesObj.handleShadow.visible = false;
+        spritesObj.handleShadow.anchor.set(0.5, 0.5)
+        spritesObj.handleShadow.position.set(App.BASE_WIDTH / 2 + 25, App.BASE_HEIGHT / 2 + 25)
 
         spritesObj.handle.zIndex = 1;
         spritesObj.handle.eventMode = 'static';
