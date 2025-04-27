@@ -23,8 +23,9 @@ class AssetLoader {
         }
     }
 
-    private baseEditSprites(spritesObj: SpriteDictionary) {
+    public baseEditSprites(spritesObj: SpriteDictionary) {
         spritesObj.door.anchor.set(0.46, 0.5)
+        spritesObj.door.visible = true;
 
         spritesObj.doorOpen.anchor.set(0.46, 0.5)
         spritesObj.doorOpen.zIndex = 1;
@@ -38,6 +39,7 @@ class AssetLoader {
 
         spritesObj.handle.zIndex = 1;
         spritesObj.handle.eventMode = 'static';
+        spritesObj.handle.visible = true;
 
         spritesObj.blink.position.set(App.BASE_WIDTH / 2 - 50, App.BASE_HEIGHT / 2 + 100)
         spritesObj.blink2.position.set(App.BASE_WIDTH / 2 + 300, App.BASE_HEIGHT / 2 + 200)

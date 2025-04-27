@@ -5,6 +5,8 @@ import App from "./App";
 import { generateCombination } from "../helpers/generateCombination";
 import { shinyVault } from "../helpers/shinyVault";
 import {sound} from "@pixi/sound"
+import assetLoader from "./AssetLoader"
+import { waitXSeconds } from "../helpers/waitXseconds";
 
 export default class GameManager {
 
@@ -111,7 +113,7 @@ export default class GameManager {
 
     }
 
-    private unlockVault() {
+    private async unlockVault() {
         this.spriteObj.door.visible = false;
         this.spriteObj.handle.visible = false;
         this.spriteObj.handleShadow.visible = false;
@@ -124,5 +126,9 @@ export default class GameManager {
         shinyVault(this.spriteObj.blink2)
         shinyVault(this.spriteObj.blink3)
         sound.play("shiny")
+        await waitXSeconds(5)
+        assetLoader.baseEditSprites(this.spriteObj)
+        sound.play("door")
+        this.resetGame()
     }
 }
