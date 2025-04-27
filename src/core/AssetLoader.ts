@@ -24,20 +24,23 @@ class AssetLoader {
     }
 
     public baseEditSprites(spritesObj: SpriteDictionary) {
-        spritesObj.door.anchor.set(0.46, 0.5)
+        spritesObj.door.anchor.set(0.5)
+        spritesObj.door.position.set(App.BASE_WIDTH / 2 + 75, App.BASE_HEIGHT / 2 - 30)
         spritesObj.door.visible = true;
 
-        spritesObj.doorOpen.anchor.set(0.46, 0.5)
+        spritesObj.doorOpen.anchor.set(0.5)
         spritesObj.doorOpen.zIndex = 1;
         spritesObj.doorOpen.visible = false;
 
         spritesObj.doorOpenShadow.visible = false;
-        spritesObj.doorOpenShadow.anchor.set(0.46, 0.5)
+        spritesObj.doorOpenShadow.anchor.set(0.5)
 
-        spritesObj.handleShadow.anchor.set(0.5, 0.5)
-        spritesObj.handleShadow.position.set(App.BASE_WIDTH / 2 + 25, App.BASE_HEIGHT / 2 + 25)
+        spritesObj.handleShadow.anchor.set(0.5)
+        spritesObj.handleShadow.position.set(App.BASE_WIDTH / 2, App.BASE_HEIGHT / 2)
+        spritesObj.handleShadow.visible = true;
 
         spritesObj.handle.zIndex = 1;
+        spritesObj.handle.position.set(App.BASE_WIDTH / 2 - 20, App.BASE_HEIGHT / 2 - 25)
         spritesObj.handle.eventMode = 'static';
         spritesObj.handle.visible = true;
 

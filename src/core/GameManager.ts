@@ -15,8 +15,8 @@ export default class GameManager {
     private stopwatch: Stopwatch
 
     private currentCombination: Combination[] = [];
-    private isResetting: any;
-    private isUnlocked: any;
+    private isResetting: boolean = false;
+    private isUnlocked: boolean = false;
     private currentRotation: number = 0;
     private currentStep: number = 0;
     private enteredCombination: Combination[] = []
@@ -61,8 +61,8 @@ export default class GameManager {
         });
           gsap.to(this.spriteObj.handleShadow, {
             rotation: this.spriteObj.handle.rotation + DEG_TO_RAD * degrees,
-            x: App.BASE_WIDTH / 2 + 25, 
-            y: App.BASE_HEIGHT / 2 + 25,
+            x: App.BASE_WIDTH / 2, 
+            y: App.BASE_HEIGHT / 2,
             duration: 0.2,
             ease: 'power1.out',
         });
@@ -121,8 +121,8 @@ export default class GameManager {
 
         gsap.to(this.spriteObj.handleShadow, {
             rotation: this.spriteObj.handleShadow.rotation + spinRotation,
-            x: App.BASE_WIDTH / 2 + 25, 
-            y: App.BASE_HEIGHT / 2 + 25,
+            x: App.BASE_WIDTH / 2, 
+            y: App.BASE_HEIGHT / 2,
             duration: 1,
             ease: 'power3.out',
         });
@@ -134,9 +134,9 @@ export default class GameManager {
         this.spriteObj.handle.visible = false;
         this.spriteObj.handleShadow.visible = false;
         this.spriteObj.doorOpen.visible = true;
-        this.spriteObj.doorOpen.position.set(4350, App.BASE_HEIGHT / 2)
+        this.spriteObj.doorOpen.position.set(App.BASE_WIDTH / 2 + 1500, App.BASE_HEIGHT / 2 - 35)
         this.spriteObj.doorOpenShadow.visible = true;
-        this.spriteObj.doorOpenShadow.position.set(4400, App.BASE_HEIGHT / 2 + 50)
+        this.spriteObj.doorOpenShadow.position.set(App.BASE_WIDTH / 2 + 1575, App.BASE_HEIGHT / 2 + 50 - 35)
         sound.play("door")
         shinyVault(this.spriteObj.blink)
         shinyVault(this.spriteObj.blink2)
