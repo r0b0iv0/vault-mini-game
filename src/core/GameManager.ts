@@ -1,13 +1,14 @@
 import gsap from "gsap";
 import { Container, DEG_TO_RAD, Ticker } from "pixi.js";
-import { SpriteDictionary } from "../helpers/types/SpriteDictionaty";
+import { SpriteDictionary } from "../helpers/types/SpriteDictionary";
 import App from "./App";
 import { generateCombination } from "../helpers/generateCombination";
-import { shinyVault } from "../helpers/shinyVault";
-import {sound} from "@pixi/sound"
+import { shinyVault } from "../animations/shinyVault";
+import { sound } from "@pixi/sound"
 import assetLoader from "./AssetLoader"
-import { waitXSeconds } from "../helpers/waitXseconds";
+import { after } from "../utils/misc";
 import { Stopwatch } from "./Stopwatch";
+import sceneManager from "./SceneManager";
 
 export default class GameManager {
 
@@ -38,10 +39,10 @@ export default class GameManager {
 
             const clickX = e.global.x;
             const handleCenterX = this.spriteObj.handle.getGlobalPosition().x;
-      
+
             const direction = clickX > handleCenterX ? 'clockwise' : 'counterclockwise';
             this.rotateHandle(direction)
-          })
+        })
     }
 
     public rotateHandle(direction: 'clockwise' | 'counterclockwise') {
@@ -49,22 +50,13 @@ export default class GameManager {
 
         sound.play("lever")
 
-        gsap.to(this.spriteObj.handle, {
-
+        gsap.to([this.spriteObj.handle, this.spriteObj.handleShadow], {
             rotation: this.spriteObj.handle.rotation + DEG_TO_RAD * degrees,
             duration: 0.2,
-            ease: 'power1.out',
             onComplete: () => {
                 this.handleRotationComplete(direction);
 
             }
-        });
-          gsap.to(this.spriteObj.handleShadow, {
-            rotation: this.spriteObj.handle.rotation + DEG_TO_RAD * degrees,
-            x: App.BASE_WIDTH / 2, 
-            y: App.BASE_HEIGHT / 2,
-            duration: 0.2,
-            ease: 'power1.out',
         });
     }
 
@@ -106,8 +98,7 @@ export default class GameManager {
 
         this.spriteObj.handle.eventMode = 'passive';
 
-
-        gsap.to(this.spriteObj.handle, {
+        gsap.to([this.spriteObj.handle, this.spriteObj.handleShadow], {
             rotation: this.spriteObj.handle.rotation + spinRotation,
             duration: 1,
             ease: 'power3.out',
@@ -116,36 +107,23 @@ export default class GameManager {
                 this.stopwatch.reset()
                 this.currentCombination = generateCombination(3);
                 this.spriteObj.handle.eventMode = 'static';
-            }
-        });
 
-        gsap.to(this.spriteObj.handleShadow, {
-            rotation: this.spriteObj.handleShadow.rotation + spinRotation,
-            x: App.BASE_WIDTH / 2, 
-            y: App.BASE_HEIGHT / 2,
-            duration: 1,
-            ease: 'power3.out',
+            }
         });
 
     }
 
     private async unlockVault() {
-        this.spriteObj.door.visible = false;
-        this.spriteObj.handle.visible = false;
-        this.spriteObj.handleShadow.visible = false;
-        this.spriteObj.doorOpen.visible = true;
-        this.spriteObj.doorOpen.position.set(App.BASE_WIDTH / 2 + 1500, App.BASE_HEIGHT / 2 - 35)
-        this.spriteObj.doorOpenShadow.visible = true;
-        this.spriteObj.doorOpenShadow.position.set(App.BASE_WIDTH / 2 + 1575, App.BASE_HEIGHT / 2 + 50 - 35)
+        sceneManager.unlockVault(this.spriteObj)
         sound.play("door")
-        shinyVault(this.spriteObj.blink)
-        shinyVault(this.spriteObj.blink2)
-        shinyVault(this.spriteObj.blink3)
+        shinyVault([this.spriteObj.blink, this.spriteObj.blink2, this.spriteObj.blink3])
         sound.play("shiny")
         this.stopwatch.stop()
-        await waitXSeconds(5)
-        assetLoader.baseEditSprites(this.spriteObj)
-        sound.play("door")
-        this.resetGame()
+        await after(5, () => {
+            sceneManager.restartScene(this.spriteObj)
+            sound.play("door")
+            this.resetGame()
+        })
+
     }
 }
