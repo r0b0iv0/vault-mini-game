@@ -1,6 +1,6 @@
 import gsap from "gsap";
 import { Container, DEG_TO_RAD, Ticker } from "pixi.js";
-import { SpriteDictionary } from "../helpers/types/SpriteDictionaty";
+import { SpriteDictionary } from "../helpers/types/SpriteDictionary";
 import App from "./App";
 import { generateCombination } from "../helpers/generateCombination";
 import { shinyVault } from "../animations/shinyVault";
@@ -121,9 +121,7 @@ export default class GameManager {
         this.spriteObj.doorOpenShadow.visible = true;
         this.spriteObj.doorOpenShadow.position.set(App.BASE_WIDTH / 2 + 1575, App.BASE_HEIGHT / 2 + 50 - 35)
         sound.play("door")
-        shinyVault(this.spriteObj.blink)
-        shinyVault(this.spriteObj.blink2)
-        shinyVault(this.spriteObj.blink3)
+        shinyVault([this.spriteObj.blink, this.spriteObj.blink2, this.spriteObj.blink3])
         sound.play("shiny")
         this.stopwatch.stop()
         await after(5, () => {

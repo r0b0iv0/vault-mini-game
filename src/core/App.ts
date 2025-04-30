@@ -2,7 +2,7 @@ import { Application, Container } from "pixi.js";
 import * as PIXI from "pixi.js"
 import gsap from "gsap";
 import PixiPlugin from "gsap/PixiPlugin";
-import { SpriteDictionary } from "../helpers/types/SpriteDictionaty";
+import { SpriteDictionary } from "../helpers/types/SpriteDictionary";
 import GameManager from "./GameManager";
 
 gsap.registerPlugin(PixiPlugin)

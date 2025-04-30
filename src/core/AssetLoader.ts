@@ -1,6 +1,6 @@
 import { Assets, Container, Sprite } from "pixi.js";
 import App from "./App";
-import { SpriteDictionary } from "../helpers/types/SpriteDictionaty";
+import { SpriteDictionary } from "../helpers/types/SpriteDictionary";
 import { sound } from "@pixi/sound";
 
 
