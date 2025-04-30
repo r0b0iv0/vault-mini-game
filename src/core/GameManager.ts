@@ -8,6 +8,7 @@ import { sound } from "@pixi/sound"
 import assetLoader from "./AssetLoader"
 import { after } from "../utils/misc";
 import { Stopwatch } from "./Stopwatch";
+import sceneManager from "./SceneManager";
 
 export default class GameManager {
 
@@ -113,19 +114,13 @@ export default class GameManager {
     }
 
     private async unlockVault() {
-        this.spriteObj.door.visible = false;
-        this.spriteObj.handle.visible = false;
-        this.spriteObj.handleShadow.visible = false;
-        this.spriteObj.doorOpen.visible = true;
-        this.spriteObj.doorOpen.position.set(App.BASE_WIDTH / 2 + 1500, App.BASE_HEIGHT / 2 - 35)
-        this.spriteObj.doorOpenShadow.visible = true;
-        this.spriteObj.doorOpenShadow.position.set(App.BASE_WIDTH / 2 + 1575, App.BASE_HEIGHT / 2 + 50 - 35)
+        sceneManager.unlockVault(this.spriteObj)
         sound.play("door")
         shinyVault([this.spriteObj.blink, this.spriteObj.blink2, this.spriteObj.blink3])
         sound.play("shiny")
         this.stopwatch.stop()
         await after(5, () => {
-            assetLoader.baseEditSprites(this.spriteObj)
+            sceneManager.restartScene(this.spriteObj)
             sound.play("door")
             this.resetGame()
         })
